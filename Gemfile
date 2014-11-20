@@ -123,3 +123,6 @@ if File.exist?(database_file)
 else
   warn("Please configure your config/database.yml first")
 end
+
+
+gem 'sprockets', '2.11.0'

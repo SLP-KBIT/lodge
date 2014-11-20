@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :lockable, :omniauthable
   validates_presence_of :name
-  before_save :generate_gravatar
+  validates_uniqueness_of :name
+  # before_save :generate_gravatar
 
   has_many :articles
   has_many :stocked_articles,
@@ -24,6 +25,7 @@ class User < ActiveRecord::Base
   acts_as_taggable_on :following_tags
 
   def generate_gravatar
+    return false if self.email == nil
     self.gravatar = Digest::MD5.hexdigest(self.email)
   end
 
@@ -61,6 +63,26 @@ class User < ActiveRecord::Base
   def unstock(article)
     stocked_articles.delete(article)
     save
+  end
+
+  #usernameを利用してログインするようにオーバーライド
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      #認証の条件式を変更する
+      where(conditions).where(["name = :value", { :value => name }]).first
+    else
+      where(conditions).first
+    end
+  end
+
+  #登録時にemailを不要とする
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
   end
 
   def self.find_for_google_oauth2(auth)

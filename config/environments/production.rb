@@ -91,7 +91,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => ENV['LODGE_DOMAIN'] }
 
   # SMTPの指定
-  config.action_mailer.delivery_method = ENV["DELIVERY_METHOD"].to_sym
+  #config.action_mailer.delivery_method = ENV["DELIVERY_METHOD"].to_sym
   config.action_mailer.smtp_settings = {
     :address              => ENV["SMTP_ADDRESS"],
     :port                 => ENV["SMTP_PORT"],

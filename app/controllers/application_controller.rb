@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   before_action :read_popular_articles, except: [:sign_in, :sign_up]
   before_action :load_pre_url
   before_action :set_pre_url, except: [:new, :edit, :show, :create, :update, :destroy, :sign_up, :preview, :list]
+  #before_filterを設定
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   def read_stocks
     @stocked_articles = []
@@ -69,4 +71,11 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
+  protected
+
+  def configure_permitted_parameters
+    #strong parametersを設定し、nameを許可
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:name, :password, :password_confirmation) }
+    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:name, :password, :remember_me) }
+  end
 end

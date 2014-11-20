@@ -1,7 +1,7 @@
 worker_processes 2
 timeout 15
 preload_app true
-listen "0.0.0.0:3000", :tcp_nopush => true
+listen "0.0.0.0:3030", :tcp_nopush => true
 
 working_directory "."
 
@@ -11,7 +11,7 @@ environment = ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'production'
 
 log = Logger.new("log/unicorn.#{environment}.log")
 log.level = Logger::INFO
-logger log
+# logger log
 
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
 
