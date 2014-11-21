@@ -1,7 +1,7 @@
 worker_processes 2
 timeout 15
 preload_app true
-listen "0.0.0.0:3030", :tcp_nopush => true
+listen "0.0.0.0:10030", :tcp_nopush => true
 
 working_directory "."
 
